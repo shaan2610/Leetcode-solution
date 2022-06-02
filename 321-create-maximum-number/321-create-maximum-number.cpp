@@ -1,26 +1,37 @@
 class Solution {
 public:
     vector<int> maxsubseq(vector<int> &a,int k) {
-        vector<vector<int>> pos(10);
         int n=a.size();
-        for(int i=0;i<n;i++) {
-            pos[a[i]].push_back(i);
-        }
         vector<int> ans;
         if(k==0) {
             return ans;
         }
-        int idx=0;
-        while(k--) {
-            for(int i=9;i>=0;i--) {
-                auto it=lower_bound(pos[i].begin(),pos[i].end(),idx);
-                if(it!=pos[i].end() and n-1-(*it)>=k) {
-                    ans.push_back(i);
-                    idx=(*it)+1;
-                    break;
+        stack<int> st;
+        for(int i=0;i<n;i++) {
+            if(st.empty()) {
+                st.push(a[i]);
+            }
+            else {
+                if(a[i]<=st.top()) {
+                    if(st.size()<k) {
+                        st.push(a[i]);
+                    }
+                }
+                else {
+                    while(not st.empty() and st.top()<a[i] and st.size()-1+n-i>=k) {
+                        st.pop();
+                    }
+                    if(st.size()<k) {
+                        st.push(a[i]);
+                    }
                 }
             }
         }
+        while(not st.empty()) {
+            ans.push_back(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
         return ans;
     }
     
