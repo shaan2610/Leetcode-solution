@@ -1,22 +1,36 @@
 class Solution {
 public:
-    void merge(vector<int>& a, int m, vector<int>& b, int n) {
-        vector<int> ans;
-        int idx1=0,idx2=0;
-        while(idx1<m and idx2<n) {
-            if(a[idx1]<=b[idx2]) {
-                ans.push_back(a[idx1++]);
+    void merge(vector<int>& a, int n, vector<int>& b, int m) {
+        int gap=(n+m+1)/2;
+        while(gap) {
+            int  idx1=0,idx2=gap;
+            while(idx2<n+m) {
+                if(idx1<n and idx2<n) {
+                    if(a[idx1]>a[idx2]) {
+                        swap(a[idx1],a[idx2]);
+                    }
+                }
+                else if(idx1<n) {
+                    if(a[idx1]>b[idx2-n]) {
+                        swap(a[idx1],b[idx2-n]);
+                    }
+                }
+                else {
+                    if(b[idx1-n]>b[idx2-n]) {
+                        swap(b[idx1-n],b[idx2-n]);
+                    }
+                }
+                idx1++;
+                idx2++;
             }
-            else {
-                ans.push_back(b[idx2++]);
+            if(gap==1) {
+                break;
             }
+            gap=(gap+1)/2;
         }
-        while(idx1<m) {
-            ans.push_back(a[idx1++]);
+        int idx=n;
+        for(auto i:b) {
+            a[n++]=i;
         }
-        while(idx2<n) {
-            ans.push_back(b[idx2++]);
-        }
-        swap(ans,a);
     }
 };
