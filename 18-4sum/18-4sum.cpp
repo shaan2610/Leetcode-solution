@@ -6,25 +6,35 @@ public:
         int n=nums.size();
         for(int i=0;i<n;i++) {
             for(int j=i+1;j<n;j++) {
-                for(int k=j+1;k<n;k++) {
-                    long long val=(long long)target-nums[i]-nums[j]-nums[k];
-                    int idx=lower_bound(nums.begin()+k+1,nums.end(),val)-nums.begin();
-                    if(idx!=n and nums[idx]==val) {
+                int val=target-nums[i]-nums[j];
+                int left=j+1,right=n-1;
+                while(left<right) {
+                    int sum=nums[left]+nums[right];
+                    if(sum>val) {
+                        right--;
+                    }
+                    else if(sum<val) {
+                        left++;
+                    }
+                    else {
                         vector<int> v(4);
                         v[0]=nums[i];
                         v[1]=nums[j];
-                        v[2]=nums[k];
-                        v[3]=val;
+                        v[2]=nums[left];
+                        v[3]=nums[right];
                         ans.push_back(v);
-                    }
-                    while(k+1<n and nums[k]==nums[k+1]) {
-                        k++;
+                        while(left<right and left+1<n and nums[left]==v[2]) {
+                            left++;
+                        }
+                        while(left<right and right-1>=0 and nums[right]==v[3]) {
+                            right--;
+                        }
                     }
                 }
                 while(j+1<n and nums[j]==nums[j+1]) {
                     j++;
                 }
-            } 
+            }
             while(i+1<n and nums[i]==nums[i+1]) {
                 i++;
             }
