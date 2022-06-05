@@ -19,9 +19,7 @@ public:
                     }
                 }
             }
-            for(int j=0;j<n;j++) {
-                dist[j]=min(dist[j],temp[j]);
-            }
+            swap(temp,dist);
         }
         return (dist[dst]==INF ? -1:dist[dst]);
     }
