@@ -12,18 +12,19 @@ class Solution{
     //railway station such that no train waits.
     int findPlatform(int arr[], int dep[], int n)
     {
-    	// Your code here
-    	vector<int> numOfTrains(2400);
-    	for(int i=0;i<n;i++) {
-    	    numOfTrains[arr[i]]++;
-    	}
-    	for(int i=0;i<n;i++) {
-    	    numOfTrains[dep[i]+1]--;
-    	}
-    	int ans=numOfTrains[0];
-    	for(int i=1;i<2400;i++) {
-    	    numOfTrains[i]+=numOfTrains[i-1];
-    	    ans=max(ans,numOfTrains[i]);
+        sort(arr,arr+n);
+        sort(dep,dep+n);
+    	int start=0,end=0,ans=0,cnt=0;
+    	while(start<n and end<n) {
+    	    if(arr[start]<=dep[end]) {
+    	        cnt++;
+    	        start++;
+    	    }
+    	    else {
+    	        cnt--;
+    	        end++;
+    	    }
+    	    ans=max(ans,cnt);
     	}
     	return ans;
     }
