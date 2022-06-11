@@ -25,6 +25,6 @@ public:
                 return nums[mid];
             }
         }
-        return (nums[low-1]);
+        return (nums[high+1]);
     }
 };
