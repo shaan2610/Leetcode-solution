@@ -36,16 +36,16 @@ public:
         mp[key]=newNode;
     }
     
-    void deleteNode(Node* &node) {
+    void deleteNode(Node* &node,int key) {
         node->prev->next=node->next;
         node->next->prev=node->prev;
+        mp.erase(key);
     }
     
     int get(int key) {
         if(mp.count(key)) {
             int ans=mp[key]->value;
-            deleteNode(mp[key]);
-            mp.erase(key);
+            deleteNode(mp[key],key);
             insertNode(key,ans);
             return ans;
         }
@@ -54,8 +54,7 @@ public:
     
     void put(int key, int value) {
         if(mp.count(key)) {
-            deleteNode(mp[key]);
-            mp.erase(key);
+            deleteNode(mp[key],key);
             insertNode(key,value);
         }
         else if(curr<cap) {
@@ -63,8 +62,7 @@ public:
             curr++;
         }
         else {
-            mp.erase(tail->prev->key);
-            deleteNode(tail->prev);
+            deleteNode(tail->prev,tail->prev->key);
             insertNode(key,value);
         }
     }
