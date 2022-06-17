@@ -9,9 +9,6 @@ public:
             lans+=sum;
             sum+=satisfaction[i];
             lans+=satisfaction[i];
-            if(lans<ans) {
-                break;
-            }
             ans=max(ans,lans);
         }
         return ans;
