@@ -6,9 +6,8 @@ public:
         reverse(satisfaction.begin(),satisfaction.end());
         int ans=0,sum=0,lans=0;
         for(int i=0;i<n;i++) {
-            lans+=sum;
             sum+=satisfaction[i];
-            lans+=satisfaction[i];
+            lans+=sum;
             ans=max(ans,lans);
         }
         return ans;
