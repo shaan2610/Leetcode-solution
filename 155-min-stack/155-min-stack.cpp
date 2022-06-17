@@ -1,17 +1,23 @@
 class MinStack {
 public:
-    vector<int> arr,mn;
+    vector<long long> arr;
+    long long mn;
     MinStack() {
-        
+        mn=INT_MAX;
     }
     
     void push(int val) {
-        arr.push_back(val);
-        if(mn.empty()) {
-            mn.push_back(val);
+        if(arr.empty()) {
+            mn=val;
+            arr.push_back(val);
+            return;
+        }
+        if(val<mn) {
+            arr.push_back(2ll*val-mn);
+            mn=val;
         }
         else {
-            mn.push_back(min(val,mn.back()));
+            arr.push_back(val);
         }
     }
     
@@ -19,22 +25,32 @@ public:
         if(arr.empty()) {
             return;
         }
-        arr.pop_back();
-        mn.pop_back();
+        if(arr.back()>=mn) {
+            arr.pop_back();
+        }
+        else {
+            mn=2*mn-arr.back();
+            arr.pop_back();
+        }
     }
     
     int top() {
         if(arr.empty()) {
             return -1;
         }
-        return arr.back();
+        if(arr.back()>=mn) {
+            return arr.back();
+        }
+        else {
+            return mn;
+        }
     }
     
     int getMin() {
-        if(mn.empty()) {
+        if(arr.empty()) {
             return -1;
         }
-        return mn.back();
+        return mn;
     }
 };
 
