@@ -12,14 +12,15 @@
 class Solution {
 public:
     void helper(TreeNode* root,vector<int> &ans) {
-        if(not root) {
-            return;
-        }
         if(root) {
             ans.push_back(root->val);
         }
-        helper(root->left,ans);
-        helper(root->right,ans);
+        if(root and root->left) {
+            helper(root->left,ans);
+        }
+        if(root and root->right) {
+            helper(root->right,ans);
+        }
     }
     
     vector<int> preorderTraversal(TreeNode* root) {
