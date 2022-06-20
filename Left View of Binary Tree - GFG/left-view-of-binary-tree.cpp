@@ -128,14 +128,15 @@ struct Node
 
 //Function to return a list containing elements of left view of the binary tree.
 void helper(Node* curr,int lev,vector<int> &ans) {
-    if(not curr) {
-        return;
-    }
-    if(lev>ans.size()) {
+    if(curr and lev>ans.size()) {
         ans.push_back(curr->data);
     }
-    helper(curr->left,lev+1,ans);
-    helper(curr->right,lev+1,ans);
+    if(curr and curr->left) {
+        helper(curr->left,lev+1,ans);
+    }
+    if(curr and curr->right) {
+        helper(curr->right,lev+1,ans);
+    }
 }
 
 vector<int> leftView(Node *root)
