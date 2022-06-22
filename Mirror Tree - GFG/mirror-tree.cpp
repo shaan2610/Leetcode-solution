@@ -112,19 +112,12 @@ class Solution {
     // Function to convert a binary tree into its mirror tree.
     void mirror(Node* node) {
         // code here
-        queue<Node*> q;
-        q.push(node);
-        while(not q.empty()) {
-            Node* curr=q.front();
-            q.pop();
-            swap(curr->left,curr->right);
-            if(curr->left) {
-                q.push(curr->left);
-            }
-            if(curr->right) {
-                q.push(curr->right);
-            }
+        if(not node) {
+            return;
         }
+        swap(node->left,node->right);
+        mirror(node->left);
+        mirror(node->right);
     }
 };
 
