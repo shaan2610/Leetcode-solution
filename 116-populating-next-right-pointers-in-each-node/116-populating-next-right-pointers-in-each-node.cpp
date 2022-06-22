@@ -22,25 +22,37 @@ public:
         if(not root) {
             return NULL;
         }
-        queue<Node*> q;
-        q.push(root);
-        while(not q.empty()) {
-            int z=q.size();
-            Node* prev=NULL;
-            for(int i=0;i<z;i++) {
-                Node* node=q.front();
-                q.pop();
-                if(node->left) {
-                    q.push(node->left);
-                    q.push(node->right);
-                }
-                if(i==0) {
-                    prev=node;
+        Node* start=root;
+        Node* prev=NULL;
+        Node* nextLev=NULL;    
+        while(start) {
+            if(start->left) {
+                if(not prev) {
+                    prev=start->left;
+                    nextLev=start->left;
                 }
                 else {
-                    prev->next=node;
-                    prev=node;
+                    prev->next=start->left;
+                    prev=start->left;
                 }
+            }
+            if(start->right) {
+                if(not prev) {
+                    prev=start->right;
+                    nextLev=start->right;
+                }
+                else {
+                    prev->next=start->right;
+                    prev=start->right;
+                }
+            }
+            if(start->next) {
+                start=start->next;
+            }
+            else {
+                start=nextLev;
+                prev=NULL;
+                nextLev=NULL;
             }
         }
         return root;
