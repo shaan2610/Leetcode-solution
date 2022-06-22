@@ -11,24 +11,17 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* curr,vector <TreeNode*> &ans) {
-        if(not curr) {
-            return;
-        }
-        ans.push_back(curr);
-        helper(curr->left,ans);
-        helper(curr->right,ans);
-    }
+    
+    TreeNode* prev=NULL;
     
     void flatten(TreeNode* &root) {
-        vector<TreeNode*> ans;
-        helper(root,ans);
-        TreeNode *node=new TreeNode(0);
-        for(auto i:ans) {
-            node->right=i;
-            node->left=NULL;
-            node=node->right;
+        if(not root) {
+            return;
         }
-        node->left=NULL;
+        flatten(root->right);
+        flatten(root->left);
+        root->right=prev;
+        root->left=NULL;
+        prev=root;
     }
 };
