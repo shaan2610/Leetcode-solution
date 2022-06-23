@@ -11,77 +11,54 @@
  */
 class Solution {
 public:
+    TreeNode* getRightPtr(TreeNode* curr) {
+        while(curr->right) {
+            curr=curr->right;
+        }
+        return curr;
+    }
+    
+    TreeNode* deleteRoot(TreeNode* root) {
+        if(not root->right) {
+            return root->left;
+        }
+        if(not root->left) {
+            return root->right;
+        }
+        TreeNode* leftChild=root->left;
+        TreeNode* rightChild=root->right;
+        TreeNode* rightMost=getRightPtr(leftChild);
+        rightMost->right=rightChild;
+        return leftChild;
+    }
+    
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(not root) {
             return NULL;
         }
         if(root->val==key) {
-            if(not root->left) {
-                return root->right;
-            }
-            else if(not root->right) {
-                return root->left;
-            }
-            else {
-                TreeNode* left=root->left;
-                TreeNode* newRoot=root->left;
-                TreeNode* right=root->right;
-                while(left->right) {
-                    left=left->right;
-                }
-                left->right=right;
-                return newRoot;
-            }
+            return deleteRoot(root);
         }
         TreeNode* curr=root;
-        TreeNode* newRoot=NULL;
+        TreeNode* parent=NULL;
         while(curr) {
-            if(curr->val==key) {
-                TreeNode* left=curr->left;
-                TreeNode* right=curr->right;
-                if(left) {
-                    if(newRoot->left==curr) {
-                        newRoot->left=left;
-                    }
-                    else {
-                        newRoot->right=left;
-                    }
-                    while(left->right) {
-                        left=left->right;
-                    }
-                    left->right=right;
-                    return root;
-                }
-                else if(right) {
-                    if(newRoot->left==curr) {
-                        newRoot->left=right;
-                    }
-                    else {
-                        newRoot->right=right;
-                    }
-                    while(right->left) {
-                        right=right->left;
-                    }
-                    right->left=left;
+            if(key>curr->val) {
+                if(curr->right and curr->right->val==key) {
+                    curr->right=deleteRoot(curr->right);
                     return root;
                 }
                 else {
-                    if(newRoot->left and newRoot->left->val==key) {
-                        newRoot->left=NULL;
-                    }
-                    else {
-                        newRoot->right=NULL;
-                    }
-                    return root;
+                    curr=curr->right;
                 }
             }
-            else if(key>curr->val) {
-                newRoot=curr;
-                curr=curr->right;
-            }
             else {
-                newRoot=curr;
-                curr=curr->left;
+                if(curr->left and curr->left->val==key) {
+                    curr->left=deleteRoot(curr->left);
+                    return root;
+                }
+                else {
+                    curr=curr->left;
+                }
             }
         }
         return root;
