@@ -11,22 +11,20 @@
  */
 class Solution {
 public:
-    TreeNode* helper(vector<int>& preorder,int st,int en) {
-        if(st>en) {
+    TreeNode* helper(vector<int>& preorder,int &i,int upperBound) {
+        int n=preorder.size();
+        if(i>=n or preorder[i]>=upperBound) {
             return NULL;
         }
-        TreeNode* node=new TreeNode(preorder[st]);
-        int idx=st;
-        while(idx<=en and preorder[idx]<=preorder[st]) {
-            idx++;
-        }
-        node->left=helper(preorder,st+1,idx-1);
-        node->right=helper(preorder,idx,en);
+        TreeNode* node=new TreeNode(preorder[i++]);
+        node->left=helper(preorder,i,node->val);
+        node->right=helper(preorder,i,upperBound);
         return node;
     }
     
     TreeNode* bstFromPreorder(vector<int>& preorder) {
         int n=preorder.size();
-        return helper(preorder,0,n-1);
+        int i=0;
+        return helper(preorder,i,INT_MAX);
     }
 };
