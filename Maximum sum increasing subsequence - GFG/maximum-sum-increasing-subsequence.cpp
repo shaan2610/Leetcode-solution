@@ -60,7 +60,7 @@ class Solution{
 	    for(int i=0;i<n;i++) {
 	        int val=arr[i]+st.getMax(0,arr[i]-1);
 	        ans=max(ans,val);
-	        st.update(arr[i],max(val,st.getMax(arr[i],arr[i])));
+	        st.update(arr[i],val);
 	    }
 	    return ans;
 	}
