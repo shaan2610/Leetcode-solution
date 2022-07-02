@@ -5,16 +5,18 @@ public:
             return 0;
         }
         int n=a.size();
-        vector<int> dp(n,1);
-        int ans=1;
+        vector<int> tail;
+        tail.push_back(a[0]);
         for(int i=1;i<n;i++) {
-            for(int j=0;j<i;j++) {
-                if(a[i]>a[j]) {
-                    dp[i]=max(dp[i],dp[j]+1);
-                }
+            auto it=lower_bound(tail.begin(),tail.end(),a[i]);
+            if(it==tail.end()) {
+                tail.push_back(a[i]);
             }
-            ans=max(ans,dp[i]);
+            else {
+                int idx=it-tail.begin();
+                tail[idx]=a[i];
+            }
         }
-        return ans;
+        return tail.size();
     }
 };
