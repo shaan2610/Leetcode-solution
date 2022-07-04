@@ -48,11 +48,9 @@ class Solution
             }
             it--;
             int time=*it;
-            if(time<=arr[i].dead) {
-                profit+=arr[i].profit;
-                ans++;
-                s.erase(time);
-            }
+            profit+=arr[i].profit;
+            ans++;
+            s.erase(time);
         }
         vector<int> v;
         v.push_back(ans);
