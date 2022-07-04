@@ -20,7 +20,7 @@ class Solution
         }
         for(int i=2;i<=k;i++) {
             for(int j=2;j<=n;j++) {
-                dp[i][j]=INT_MAX;
+                dp[i][j]=k;
                 for(int x=1;x<i;x++) {
                     dp[i][j]=min(dp[i][j],max(dp[x-1][j-1],dp[i-x][j])+1);
                 }
