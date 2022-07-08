@@ -6,24 +6,19 @@ public:
             return nums[0];
         }
         
-        auto calc = [&] (vector<int> v) {
-            int n1=v.size();
-            vector<int> dp(n1+1);
-            dp[1]=v[0];
-            for(int i=2;i<=n1;i++) {
-                dp[i]=max(dp[i-1],v[i-1]+dp[i-2]);
+        auto calc = [&] (int l,int r) {
+            int n=r-l+1;
+            vector<int> dp(n+1);
+            dp[1]=nums[l];
+            for(int i=2;i<=n;i++) {
+                dp[i]=max(dp[i-1],dp[i-2]+nums[l+i-1]);
             }
-            return dp[n1];
+            return dp[n];
         };
         
         int ans=0;
-        for(int i=0;i<n;i++) {
-            vector<int> v;
-            for(int j=1;j<n;j++) {
-                v.push_back(nums[(i+j)%n]);
-            }
-            ans=max(ans,calc(v));
-        }
+        ans=max(ans,calc(0,n-2));
+        ans=max(ans,calc(1,n-1));
         return ans;
     }
 };
