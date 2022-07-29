@@ -4,8 +4,8 @@ public:
     vector<int> dx = {-1,1,0,0};
     vector<int> dy = {0,0,-1,1};
     
-    bool dfs(int x,int y,vector<vector<int>> &vis,string &word,int idx,vector<vector<char>> &board) {
-        int n=vis.size(),m=vis[0].size(),len=word.size();
+    bool dfs(int x,int y,string &word,int idx,vector<vector<char>> &board) {
+        int n=board.size(),m=board[0].size(),len=word.size();
         if(idx==len) {
             return true;
         }
@@ -18,16 +18,17 @@ public:
         };
         
         bool ans=false;
-        vis[x][y]++;
+        char org=board[x][y];
+        board[x][y]='*';
         int chk=0;
         for(int dir=0;dir<4;dir++) {
             int nx=x+dx[dir],ny=y+dy[dir];
-            if(chkBound(nx,ny) and not vis[nx][ny]) {
+            if(chkBound(nx,ny)) {
                 chk++;
-                ans|=dfs(nx,ny,vis,word,idx+1,board);
+                ans|=dfs(nx,ny,word,idx+1,board);
             }
         }
-        vis[x][y]=0;
+        board[x][y]=org;
         if(chk==0 and idx==len-1) {
             return true;
         }
@@ -39,8 +40,7 @@ public:
         int len=word.size();
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                vector<vector<int>> vis(n,vector<int>(m));
-                if(dfs(i,j,vis,word,0,board)) {
+                if(dfs(i,j,word,0,board)) {
                     return true;
                 }
             }
