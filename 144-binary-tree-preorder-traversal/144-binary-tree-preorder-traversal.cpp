@@ -16,16 +16,16 @@ public:
         TreeNode* curr=root;
         while(curr) {
             if(curr->left) {
-                TreeNode* prev=curr->left;
-                while(prev->right and prev->right!=curr) {
-                    prev=prev->right;
+                TreeNode* thread=curr->left;
+                while(thread->right and thread->right!=curr) {
+                    thread=thread->right;
                 }
-                if(prev->right) {
-                    prev->right=NULL;
+                if(thread->right) {
                     curr=curr->right;
+                    thread->right=NULL;
                 }
                 else {
-                    prev->right=curr;
+                    thread->right=curr;
                     ans.push_back(curr->val);
                     curr=curr->left;
                 }
