@@ -133,9 +133,8 @@ class Solution{
     	        }
     	    }
     	    else {
-    	        reverse(lev.begin(),lev.end());
-    	        for(auto i:lev) {
-    	            ans.push_back(i);
+    	        for(int i=lev.size()-1;i>=0;i--) {
+    	            ans.push_back(lev[i]);
     	        }
     	    }
     	    level++;
