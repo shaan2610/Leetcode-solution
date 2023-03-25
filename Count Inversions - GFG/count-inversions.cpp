@@ -10,49 +10,51 @@ class Solution{
     // N : Size of the Array arr[]
     // Function to count inversions in the array.
     
-    long long mergeCount(long long arr[],int l,int mid,int r) {
-        int st1=l,en1=mid,st2=mid+1,en2=r;
-        long long temp[r-l+1];
-        int idx=0;
+    long long mergeCount(long long arr[],int low,int mid,int high) {
+        int ptr1=low,end1=mid;
+        int ptr2=mid+1,end2=high;
+        int tempSize=high-low+1;
+        int index=0;
+        long long temp[tempSize];
         long long count=0;
-        while(st1<=en1 and st2<=en2) {
-            if(arr[st1]<=arr[st2]) {
-                temp[idx]=arr[st1];
-                st1++;
-                idx++;
+        while(ptr1<=end1 and ptr2<=end2) {
+            if(arr[ptr1]<=arr[ptr2]) {
+                temp[index]=arr[ptr1];
+                ptr1++;
+                index++;
             }
             else {
-                count+=(en1-st1+1);
-                temp[idx]=arr[st2];
-                st2++;
-                idx++;
+                count+=(end1-ptr1+1);
+                temp[index]=arr[ptr2];
+                ptr2++;
+                index++;
             }
         }
-        while(st1<=en1) {
-            temp[idx]=arr[st1];
-            st1++;
-            idx++;
+        while(ptr1<=end1) {
+            temp[index]=arr[ptr1];
+            ptr1++;
+            index++;
         }
-        while(st2<=en2) {
-            temp[idx]=arr[st2];
-            st2++;
-            idx++;
+        while(ptr2<=end2) {
+            temp[index]=arr[ptr2];
+            ptr2++;
+            index++;
         }
-        for(int i=0;i<r-l+1;i++) {
-            arr[l+i]=temp[i];
+        for(int i=0;i<tempSize;i++) {
+            arr[low+i]=temp[i];
         }
         return count;
     }
     
-    long long countInversionUsingMergeSort(long long arr[],int l,int r) {
-        if(l==r) {
+    long long countInversionUsingMergeSort(long long arr[],int low,int high) {
+        if(low==high) {
             return 0;
         }
+        int mid=(low+high)/2;
         long long ans=0;
-        int mid=(l+r)/2;
-        ans+=countInversionUsingMergeSort(arr,l,mid);
-        ans+=countInversionUsingMergeSort(arr,mid+1,r);
-        ans+=mergeCount(arr,l,mid,r);
+        ans+=countInversionUsingMergeSort(arr,low,mid);
+        ans+=countInversionUsingMergeSort(arr,mid+1,high);
+        ans+=mergeCount(arr,low,mid,high);
         return ans;
     }
     
