@@ -1,45 +1,40 @@
 class MyQueue {
 public:
-    stack<int> st;
+    stack<int> st1, st2;
     MyQueue() {
         
     }
     
+    void transfer_elements() {
+        while(not st1.empty()) {
+            st2.push(st1.top());
+            st1.pop();
+        }
+    }
+    
     void push(int x) {
-        st.push(x);
+        st1.push(x);
     }
     
     int pop() {
-        stack<int> temp;
-        while(not st.empty()) {
-            temp.push(st.top());
-            st.pop();
+        if(st2.empty()) {
+            transfer_elements();
         }
-        int val = temp.top();
-        temp.pop();
-        while(not temp.empty()) {
-            st.push(temp.top());
-            temp.pop();
-        }
+        int val = st2.top();
+        st2.pop();
         return val;
     }
     
     int peek() {
-        stack<int> temp;
-        while(not st.empty()) {
-            temp.push(st.top());
-            st.pop();
+        if(st2.empty()) {
+            transfer_elements();
         }
-        int val = temp.top();
-        while(not temp.empty()) {
-            st.push(temp.top());
-            temp.pop();
-        }
+        int val = st2.top();
         return val;
     }
     
     bool empty() {
-        return st.empty();
+        return (st1.empty() and st2.empty());
     }
 };
 
