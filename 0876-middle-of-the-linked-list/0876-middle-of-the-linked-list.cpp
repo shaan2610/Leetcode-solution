@@ -10,24 +10,12 @@
  */
 class Solution {
 public:
-    int length(ListNode* node) {        // To calculate length of the LL
-        ListNode* temp = node;
-        int len = 0;
-        while(temp) {
-            len++;
-            temp = temp -> next;
-        }
-        return len;
-    }
-    
     ListNode* middleNode(ListNode* head) {
-        int len = length(head);
-        int pos = (len / 2) + 1;
-        int moves = pos - 1;
-        ListNode* temp = head;
-        while(moves--) {
-            temp = temp -> next;
+        ListNode *slow = head, *fast = head;
+        while(fast and fast -> next) {
+            slow = slow -> next;
+            fast = fast-> next -> next;
         }
-        return temp;
+        return slow;
     }
 };
