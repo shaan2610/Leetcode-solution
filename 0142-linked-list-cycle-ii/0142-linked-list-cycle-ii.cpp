@@ -9,15 +9,29 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        map<ListNode*, bool> mp;
-        ListNode* temp = head;
-        while(temp) {
-            if(mp.find(temp) != mp.end()) { // temp is already there in the map
-                return temp;
-            }
-            mp[temp] = true;
-            temp = temp -> next;
+        if(head == NULL) {
+            return NULL;
         }
-        return NULL;
+        bool has_cycle = false;
+        ListNode *slow = head, *fast = head;
+        while(slow and fast and fast -> next) {
+            slow = slow -> next;
+            fast = fast -> next -> next;
+            if(slow == fast) {
+                has_cycle = true;
+                break;
+            }
+        }
+        
+        if(has_cycle == false) {
+            return NULL;
+        }
+        
+        slow = head;
+        while(slow != fast) {
+            slow = slow -> next;
+            fast = fast -> next;
+        }
+        return slow;
     }
 };
