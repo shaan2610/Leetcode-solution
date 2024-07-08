@@ -11,28 +11,39 @@
  */
 class Solution {
 public:
-    
-    int getMaxSum(TreeNode* curr,int &mn,int &mx,int &ans) {
-        if(not curr) {
-            return 0;
+    long inf = 1e10;
+    long get_max_sum(TreeNode* curr, long &min_val, long &max_val, long &ans) {
+        if(curr == NULL) {      // If tree is empty then sum is 0
+            return 0l;
         }
-        int leftMin=1e9,leftMax=-1e9;
-        int left=getMaxSum(curr->left,leftMin,leftMax,ans);
-        int rightMin=1e9,rightMax=-1e9;
-        int right=getMaxSum(curr->right,rightMin,rightMax,ans);
-        int sum=left+right+curr->val;
-        mn=min({mn,curr->val,leftMin,rightMin});
-        mx=max({mx,curr->val,leftMax,rightMax});
-        if(left!=-1e9 and right!=-1e9 and leftMax<curr->val and rightMin>curr->val) {
-            ans=max(ans,sum);
-            return sum;
+        
+        // Check if the subtree rooted at curr is a BST or not
+        
+        // LST
+        long lst_min = inf, lst_max = -inf;     // Min and max value of LST
+        long lst_sum = get_max_sum(curr -> left, lst_min, lst_max, ans);
+        // RST
+        long rst_min = inf, rst_max = -inf;
+        long rst_sum = get_max_sum(curr -> right, rst_min, rst_max, ans);
+        
+        long curr_val = curr -> val;
+        min_val = min({min_val, curr_val, lst_min, rst_min});
+        max_val = max({max_val, curr_val, lst_max, rst_max});
+        if(lst_sum != -inf and rst_sum != -inf and curr_val > lst_max and curr_val < rst_min) {
+            // Current subtree is a BST
+            long curr_sum = lst_sum + rst_sum + curr_val;
+            ans = max(ans, curr_sum);
+            return curr_sum;
         }
-        return -1e9; 
+        else {
+            // The current subtree is not a BST
+            return -inf;        // Whenever fxn returns -inf, it implies it is not a BST
+        }
     }
     
     int maxSumBST(TreeNode* root) {
-        int mx=1e9,mn=-1e9,ans=0;
-        getMaxSum(root,mn,mx,ans);
-        return ans;
+        long max_val = inf, min_val = -inf, ans = 0;
+        get_max_sum(root, min_val, max_val, ans);
+        return int(ans);
     }
 };
