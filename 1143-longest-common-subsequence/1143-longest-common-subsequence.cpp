@@ -39,6 +39,28 @@ public:
                 }
             }
         }
-        return dp[n][m];
+        
+        int i = n, j = m;
+        string lcs;
+        while(i > 0 and j > 0) {
+            if(text1[i-1] == text2[j-1]) {      // Value must have came from upper left diagonal
+                lcs.push_back(text1[i-1]);
+                i--;
+                j--;
+            }
+            else {      // Value must be one of the max of left or top
+                if(dp[i][j] == dp[i][j-1]) {        // Value came from left
+                    j--;
+                }
+                else {      // Value came from top
+                    i--;
+                }
+            }
+        }
+        
+        reverse(lcs.begin(), lcs.end());
+        cout<<lcs;
+        
+        return lcs.size();
     }
 };
