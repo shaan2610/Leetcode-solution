@@ -1,36 +1,38 @@
 class Solution {
 public:
-    int longestCommonSubsequence(string text1, string text2) {
-        int n = text1.size(), m = text2.size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1));
-        // dp[i][j] --> Length of LCS considering first i charaters of text1 and first j characters of text2
-        // ans --> dp[n][m]
-        for(int i=0;i<=n;i++) {
-            dp[i][0] = 0;
-        }
-        for(int i=0;i<=m;i++) {
-            dp[0][i] = 0;
-        }
-        for(int i=1;i<=n;i++) {
-            for(int j=1;j<=m;j++) {
-                // ==> We are at (i-1)th index on text1 and (j-1)th index at text2
-                // We are considering first i characters of text1 and first j characters of text2
-                if(text1[i-1] == text2[j-1]) {
-                    dp[i][j] = 1 + dp[i-1][j-1];
+    int longestPalindromeSubseq(string s) {
+        int n = s.size();
+        // dp[i][j] = length of LPS of substring s[i..j]
+        // ans --> dp[0][n-1]
+        // if(i == j) ==> len = 1 ==> dp[i][j] = 1
+        vector<vector<int>> dp(n, vector<int>(n));
+        for(int len=1;len<=n;len++) {
+            for(int start=0;start<n;start++) {
+                int end = start + len - 1;
+                if(end >= n) {      // Invalid index
+                    continue;
+                }
+                if(len == 1) {
+                    dp[start][end] = 1;
+                }
+                else if(len == 2) {
+                    if(s[start] == s[end]) {
+                        dp[start][end] = 2;
+                    }
+                    else {
+                        dp[start][end] = 1;
+                    }
                 }
                 else {
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                    if(s[start] == s[end]) {
+                        dp[start][end] = 2 + dp[start+1][end-1];
+                    }
+                    else {
+                        dp[start][end] = max(dp[start+1][end], dp[start][end-1]);
+                    }
                 }
             }
         }
-        
-        return dp[n][m];
-    }
-    
-    int longestPalindromeSubseq(string s) {
-        // LCS of s and rev(s)
-        string s_rev = s;
-        reverse(s_rev.begin(), s_rev.end());
-        return longestCommonSubsequence(s, s_rev);
+        return dp[0][n-1];
     }
 };
