@@ -39,9 +39,11 @@ public:
                     }
                     else if(p[j-1] == '*') {
                         // dp[i][j] = dp[i][j-1] || dp[i-1][j-1] || dp[i-2][j-1] || ... || dp[0][j-1];
-                        for(int k=0;k<=i;k++) {
-                            dp[i][j] |= dp[k][j-1];
-                        }
+                        // or 
+                        dp[i][j] = dp[i][j-1] || dp[i-1][j];
+                        // for(int k=0;k<=i;k++) {
+                        //     dp[i][j] |= dp[k][j-1];
+                        // }
                     }
                     else {      // p[j-1] is a lowercase english character which is not matching with s[i-1]
                         dp[i][j] = 0;
