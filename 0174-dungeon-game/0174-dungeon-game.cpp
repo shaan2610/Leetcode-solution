@@ -76,7 +76,38 @@ public:
         // dp[i][j] --> min health required to reach dest(n-1, m-1) from (i, j)
         // ans --> dp[0][0]
         int n = dungeon.size(), m = dungeon[0].size();
-        vector<vector<int>> dp(n, vector<int>(m, -1));
-        return solve(dungeon, 0, 0, dp) + 1;
+        vector<vector<int>> dp(n, vector<int>(m));
+        for(int i=n-1;i>=0;i--) {
+            for(int j=m-1;j>=0;j--) {
+                if(i + 1 < n and j + 1 < m) {
+                    if(dungeon[i][j] <= 0) {
+                        dp[i][j] = abs(dungeon[i][j]) + min(dp[i+1][j], dp[i][j+1]);
+                    }
+                    else {
+                        dp[i][j] = abs(min(0, dungeon[i][j] - min(dp[i+1][j], dp[i][j+1])));
+                    }
+                }
+                else if(i + 1 < n) {
+                    if(dungeon[i][j] <= 0) {
+                        dp[i][j] = abs(dungeon[i][j]) + dp[i+1][j];
+                    }
+                    else {
+                        dp[i][j] = abs(min(0, dungeon[i][j] - dp[i+1][j]));
+                    }
+                }
+                else if(j + 1 < m) {
+                    if(dungeon[i][j] <= 0) {
+                        dp[i][j] = abs(dungeon[i][j]) + dp[i][j+1];
+                    }
+                    else {
+                        dp[i][j] = abs(min(0, dungeon[i][j] - dp[i][j+1]));
+                    }
+                }
+                else {
+                    dp[i][j] = abs(min(0, dungeon[i][j]));
+                }
+            }
+        }
+        return dp[0][0] + 1;
     }
 };
