@@ -1,16 +1,21 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        set<long long> st;
-        st.insert(1);
-        long long ans;
-        while(n--) {
-            ans = *st.begin();
-            st.erase(st.begin());
-            st.insert(ans * 2ll);
-            st.insert(ans * 3ll);
-            st.insert(ans * 5ll);
+        vector<int> ans(n);
+        ans[0] = 1;
+        int ptr2 = 0, ptr3 = 0, ptr5 = 0;
+        for(int i=1;i<n;i++) {
+            ans[i] = min({2 * ans[ptr2], 3 * ans[ptr3], 5 * ans[ptr5]});
+            if(ans[i] == 2 * ans[ptr2]) {
+                ptr2++;
+            }
+            if(ans[i] == 3 * ans[ptr3]) {
+                ptr3++;
+            }
+            if(ans[i] == 5 * ans[ptr5]) {
+                ptr5++;
+            }
         }
-        return ans;
+        return ans.back();
     }
 };
